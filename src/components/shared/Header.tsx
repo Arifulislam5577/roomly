@@ -1,5 +1,7 @@
+import { List } from "lucide-react";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header = () => {
   return (
@@ -8,11 +10,11 @@ const Header = () => {
         <p>30% off available on all orders</p>
       </div>
       <div className="bg-slate-50 border-b border-b-slate-200">
-        <div className="max-w-7xl mx-auto py-3.5 flex items-center justify-between">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <Link to="/" className="text-3xl font-bold text-slate-950">
             Roomly
           </Link>
-          <div className="space-x-5">
+          <div className="space-x-5 md:block hidden">
             <Link className="text-sm font-medium text-slate-900" to="/">
               Home
             </Link>
@@ -26,7 +28,7 @@ const Header = () => {
               Contact Us
             </Link>
           </div>
-          <div>
+          <div className="md:block hidden">
             <Link to="/login" className={buttonVariants({ variant: "link" })}>
               Login
             </Link>
@@ -34,6 +36,17 @@ const Header = () => {
               Register Now
             </Link>
           </div>
+
+          <Sheet>
+            <SheetTrigger asChild className="md:hidden flex">
+              <Button variant="outline" size="icon">
+                <List className="h-4 w-4" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-[400px] sm:w-[540px]">
+              <p>Sheet content</p>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

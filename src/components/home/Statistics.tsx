@@ -1,10 +1,10 @@
 const Statistics = () => {
   return (
-    <div>
+    <div className="xl:text-left text-center">
       <p className="text-base font-medium text-slate-900">
         Trusted by 50k+ users
       </p>
-      <div className="flex items-center mt-3">
+      <div className="flex items-center xl:justify-start justify-center mt-3">
         <div className="flex">
           <svg
             className="w-5 h-5"
