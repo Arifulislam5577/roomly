@@ -14,7 +14,7 @@ const WhyUs = () => {
               </p>
             </div>
           </div>
-          <div className="lg:col-span-6 lg:w-full max-w-xl col-span-12 mx-auto border border-slate-200 flex items-start p-6 rounded-lg gap-x-5">
+          <div className="lg:col-span-6 lg:w-full max-w-xl col-span-12 mx-auto border border-slate-200 flex items-start p-6 rounded-lg bg-white">
             <div className="flex-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ const WhyUs = () => {
               </p>
             </div>
           </div>
-          <div className="lg:col-span-6 lg:w-full max-w-xl mx-auto col-span-12 border border-slate-200 flex items-start p-6 rounded-lg gap-x-5">
+          <div className="lg:col-span-6 lg:w-full max-w-xl mx-auto col-span-12 border border-slate-200 flex items-start p-6 rounded-lg bg-white">
             <div className="flex-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
