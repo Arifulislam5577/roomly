@@ -18,13 +18,16 @@ const Header = () => {
             <Link className="text-sm font-medium text-slate-900" to="/">
               Home
             </Link>
-            <Link className="text-sm font-medium text-slate-900" to="/products">
+            <Link className="text-sm font-medium text-slate-900" to="/rooms">
               Meeting Rooms
             </Link>
-            <Link className="text-sm font-medium text-slate-900" to="/products">
+            <Link className="text-sm font-medium text-slate-900" to="/about-us">
               About Us
             </Link>
-            <Link className="text-sm font-medium text-slate-900" to="/products">
+            <Link
+              className="text-sm font-medium text-slate-900"
+              to="/contact-us"
+            >
               Contact Us
             </Link>
           </div>
