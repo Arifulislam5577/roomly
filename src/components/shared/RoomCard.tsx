@@ -4,9 +4,14 @@ import { cn } from "../../lib/utils";
 import { Badge } from "../ui/badge";
 import { buttonVariants } from "../ui/button";
 
-const RoomCard = () => {
+const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
   return (
-    <div className="col-span-3 p-5 border border-slate-100 bg-white duration-300 transition-transform hover:translate-y-1 rounded-lg">
+    <div
+      className={cn(
+        "p-5 border border-slate-100 bg-white duration-300 transition-transform hover:translate-y-1 rounded-lg",
+        className
+      )}
+    >
       <img src={RoomImage} alt="feature" className="rounded-sm" />
 
       <div className="mt-4 text-left space-y-2.5">
