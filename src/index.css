@@ -73,3 +73,12 @@ body {
   height: 100%;
   @apply bg-slate-50;
 }
+
+#scroll-bar::-webkit-scrollbar {
+  @apply hidden;
+}
+
+#scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

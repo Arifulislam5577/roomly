@@ -56,7 +56,13 @@ const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
           <Badge variant={"outline"}>$120</Badge>
         </p>
 
-        <Link to="/rooms/1" className={cn(buttonVariants({}), "w-full")}>
+        <Link
+          to="/rooms/1"
+          className={cn(
+            buttonVariants({ size: "sm", variant: "outline" }),
+            "w-full"
+          )}
+        >
           See Details
         </Link>
       </div>
