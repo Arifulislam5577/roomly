@@ -22,7 +22,7 @@ import { Slider } from "../components/ui/slider";
 
 const Rooms = () => {
   return (
-    <search className="py-10 sm:py-16 lg:py-24 bg-white">
+    <section className="py-10 sm:py-16 lg:py-24 bg-white">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-12 items-start xl:gap-y-0 gap-y-8">
           <div className="xl:col-span-3 col-span-12 space-y-3">
@@ -94,7 +94,7 @@ const Rooms = () => {
           </div>
         </div>
       </div>
-    </search>
+    </section>
   );
 };
 
