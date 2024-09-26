@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../components/ui/button";
 import {
@@ -12,6 +14,8 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
+import { useRegisterMutation } from "../redux/api/authApi";
+import { TErrorResponse } from "../types/global.type";
 
 const registerSchema = z.object({
   name: z.string().min(4, "Name is required"),
@@ -30,6 +34,8 @@ const registerSchema = z.object({
 });
 
 const Register = () => {
+  const [addUser, { isLoading, isError, error, isSuccess }] =
+    useRegisterMutation();
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -41,9 +47,22 @@ const Register = () => {
     },
   });
 
+  const err = error as TErrorResponse;
+
   const onSubmit = form.handleSubmit((data) => {
-    console.log("Form Data: ", data);
+    addUser({ password: data.pass, ...data });
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.reset();
+      toast("Register successfully");
+    }
+
+    if (isError) {
+      toast.error(err?.data?.message);
+    }
+  }, [error, isError, isSuccess, form, err?.data?.message]);
 
   return (
     <section>
@@ -156,8 +175,8 @@ const Register = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Submit
+              <Button disabled={isLoading} type="submit" className="w-full">
+                {isLoading ? "Loading..." : "Sign Up"}
               </Button>
             </form>
           </Form>

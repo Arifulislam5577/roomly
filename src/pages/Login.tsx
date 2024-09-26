@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../components/ui/button";
 import {
@@ -12,6 +14,8 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
+import { useLoginMutation } from "../redux/api/authApi";
+import { TErrorResponse } from "../types/global.type";
 
 const loginSchema = z.object({
   email: z
@@ -23,6 +27,9 @@ const loginSchema = z.object({
 });
 
 const Login = () => {
+  const [loginUser, { isSuccess, isError, error, isLoading, data }] =
+    useLoginMutation();
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,9 +38,23 @@ const Login = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    console.log("Form Data: ", data);
+  const err = error as TErrorResponse;
+
+  const onSubmit = form.handleSubmit((value) => {
+    loginUser({ password: value.pass, ...value });
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.reset();
+      toast(data?.message);
+    }
+
+    if (isError) {
+      toast.error(err?.data?.message);
+    }
+  }, [error, isError, isSuccess, form, err?.data, data?.message]);
+
   return (
     <section>
       <div className="py-10 bg-white sm:py-16 lg:py-24">
@@ -94,8 +115,8 @@ const Login = () => {
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                Submit
+              <Button disabled={isLoading} type="submit" className="w-full">
+                {isLoading ? "Loading..." : "Sign In"}
               </Button>
             </form>
           </Form>
