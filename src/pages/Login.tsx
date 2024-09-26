@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../components/ui/button";
@@ -15,6 +15,8 @@ import {
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
 import { useLoginMutation } from "../redux/api/authApi";
+import { userLogin } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hooks";
 import { TErrorResponse } from "../types/global.type";
 
 const loginSchema = z.object({
@@ -27,7 +29,9 @@ const loginSchema = z.object({
 });
 
 const Login = () => {
-  const [loginUser, { isSuccess, isError, error, isLoading, data }] =
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [loginUser, { isSuccess, isError, error, isLoading }] =
     useLoginMutation();
 
   const form = useForm({
@@ -38,22 +42,30 @@ const Login = () => {
     },
   });
 
+  const { handleSubmit, reset, control } = form;
+
   const err = error as TErrorResponse;
 
-  const onSubmit = form.handleSubmit((value) => {
-    loginUser({ password: value.pass, ...value });
+  const onSubmit = handleSubmit(async (value) => {
+    const { data, token } = await loginUser({
+      password: value.pass,
+      ...value,
+    }).unwrap();
+
+    dispatch(userLogin({ user: data, token }));
   });
 
   useEffect(() => {
     if (isSuccess) {
-      form.reset();
-      toast(data?.message);
+      reset();
+      toast("Login successfully");
+      navigate("/");
     }
 
     if (isError) {
       toast.error(err?.data?.message);
     }
-  }, [error, isError, isSuccess, form, err?.data, data?.message]);
+  }, [error, isError, isSuccess, reset, navigate, err?.data]);
 
   return (
     <section>
@@ -79,7 +91,7 @@ const Login = () => {
           <Form {...form}>
             <form onSubmit={onSubmit}>
               <FormField
-                control={form.control}
+                control={control}
                 name="email"
                 render={({ field }) => (
                   <FormItem className="mb-3">
@@ -97,7 +109,7 @@ const Login = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="pass"
                 render={({ field }) => (
                   <FormItem className="mb-3">

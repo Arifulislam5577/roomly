@@ -1,9 +1,13 @@
 import { List } from "lucide-react";
 import { Link } from "react-router-dom";
+import { userLogout } from "../../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Button, buttonVariants } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const Header = () => {
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   return (
     <header>
       <div className="bg-slate-950 py-1.5 text-center text-white text-sm font-medium">
@@ -32,12 +36,29 @@ const Header = () => {
             </Link>
           </div>
           <div className="md:block hidden">
-            <Link to="/login" className={buttonVariants({ variant: "link" })}>
-              Login
-            </Link>
-            <Link to="/register" className={buttonVariants()}>
-              Register Now
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  to="/my-booking"
+                  className={buttonVariants({ variant: "link" })}
+                >
+                  My Booking
+                </Link>
+                <Button onClick={() => dispatch(userLogout())}>Logout</Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className={buttonVariants({ variant: "link" })}
+                >
+                  Login
+                </Link>
+                <Link to="/register" className={buttonVariants()}>
+                  Register Now
+                </Link>
+              </>
+            )}
           </div>
 
           <Sheet>

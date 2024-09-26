@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../components/ui/button";
@@ -34,8 +34,10 @@ const registerSchema = z.object({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const [addUser, { isLoading, isError, error, isSuccess }] =
     useRegisterMutation();
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -47,22 +49,25 @@ const Register = () => {
     },
   });
 
+  const { handleSubmit, reset, control } = form;
+
   const err = error as TErrorResponse;
 
-  const onSubmit = form.handleSubmit((data) => {
+  const onSubmit = handleSubmit((data) => {
     addUser({ password: data.pass, ...data });
   });
 
   useEffect(() => {
     if (isSuccess) {
-      form.reset();
+      reset();
       toast("Register successfully");
+      navigate("/login");
     }
 
     if (isError) {
       toast.error(err?.data?.message);
     }
-  }, [error, isError, isSuccess, form, err?.data?.message]);
+  }, [error, isError, isSuccess, reset, navigate, err?.data]);
 
   return (
     <section>
@@ -87,7 +92,7 @@ const Register = () => {
           <Form {...form}>
             <form onSubmit={onSubmit}>
               <FormField
-                control={form.control}
+                control={control}
                 name="name"
                 render={({ field }) => (
                   <FormItem className="mb-3">
@@ -104,7 +109,7 @@ const Register = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="email"
                 render={({ field }) => (
                   <FormItem className="mb-3">
@@ -122,7 +127,7 @@ const Register = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="pass"
                 render={({ field }) => (
                   <FormItem className="mb-3">
@@ -140,7 +145,7 @@ const Register = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="mb-3">
@@ -158,7 +163,7 @@ const Register = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="address"
                 render={({ field }) => (
                   <FormItem className="mb-3">
