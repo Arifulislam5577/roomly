@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 const Header = () => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
   return (
     <header>
       <div className="bg-slate-950 py-1.5 text-center text-white text-sm font-medium">
@@ -36,13 +37,23 @@ const Header = () => {
             </Link>
           </div>
           <div className="md:block hidden">
-            {user ? (
+            {user?.role === "user" ? (
               <>
                 <Link
                   to="/my-booking"
                   className={buttonVariants({ variant: "link" })}
                 >
                   My Booking
+                </Link>
+                <Button onClick={() => dispatch(userLogout())}>Logout</Button>
+              </>
+            ) : user?.role === "admin" ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className={buttonVariants({ variant: "link" })}
+                >
+                  Dashboard
                 </Link>
                 <Button onClick={() => dispatch(userLogout())}>Logout</Button>
               </>

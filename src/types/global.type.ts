@@ -19,3 +19,14 @@ export type TDataResponse = {
 };
 
 export type TErrorResponse = TError & FetchBaseQueryError;
+
+export type TUser = {
+  address: string;
+  createdAt: string;
+  email: string;
+  name: string;
+  phone: string;
+  role: "user" | "admin";
+  updatedAt: string;
+  _id: string;
+};

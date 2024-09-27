@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { TUser } from "../../../types/global.type";
 
-const initialState = {
+interface initialStateInterface {
+  user: TUser | null;
+  token: string | null;
+}
+
+const initialState: initialStateInterface = {
   user: null,
   token: null,
 };
