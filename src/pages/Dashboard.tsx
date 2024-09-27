@@ -22,7 +22,7 @@ const Dashboard = () => {
                 <li className="hover:bg-slate-900 group rounded-md">
                   <Link
                     className="flex items-center gap-x-1.5 font-medium group-hover:text-white text-base py-2.5 text-slate-600 group-hover:translate-x-1 group-hover:px-3 transition-transform duration-300"
-                    to="/dashboard/rooms"
+                    to="/dashboard"
                   >
                     <House size={16} />
                     Rooms

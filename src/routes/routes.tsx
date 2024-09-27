@@ -51,8 +51,7 @@ export const rootRoutes = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
-          { index: true, element: <Dashboard /> },
-          { path: "rooms", element: <RoomDashboard /> },
+          { index: true, element: <RoomDashboard /> },
           { path: "slots", element: <SlotDashboard /> },
           { path: "booking", element: <BookingDashboard /> },
           { path: "users", element: <UserDashboard /> },

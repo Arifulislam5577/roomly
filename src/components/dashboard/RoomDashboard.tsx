@@ -1,14 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,30 +17,14 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import AddNewRoom from "./AddNewRoom";
 
 const RoomDashboard = () => {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <p className="text-xl font-bold text-slate-600">Room Dashboard</p>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Add New Room</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4"></div>
-            <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <AddNewRoom />
       </div>
       <div>
         <Table className="bg-white rounded-lg border border-slate-100">
