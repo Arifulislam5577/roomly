@@ -11,7 +11,7 @@ const Dashboard = () => {
   return (
     <section className="py-10 sm:py-16 lg:py-24">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-12 gap-5 justify-between">
+        <div className="grid grid-cols-12 gap-5 items-start justify-between">
           <div className="col-span-12 lg:col-span-3 bg-white border border-slate-200 p-5 space-y-5 divide-y divide-slate-300 rounded-lg">
             <p className="flex items-center gap-x-1.5 font-medium text-slate-600">
               <Settings size={16} /> Manage Dashboard

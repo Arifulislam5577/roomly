@@ -3,7 +3,10 @@ import BookingDashboard from "../components/dashboard/BookingDashboard";
 import RoomDashboard from "../components/dashboard/RoomDashboard";
 import SlotDashboard from "../components/dashboard/SlotDashboard";
 import UserDashboard from "../components/dashboard/UserDashboard";
-import PrivateRoute from "../components/layout/PrivateRouteLayout";
+import {
+  PrivateAdminRoute,
+  PrivateUserRoute,
+} from "../components/layout/PrivateRouteLayout";
 import RootLayout from "../components/layout/RootLayout";
 import About from "../pages/About";
 import Booking from "../pages/Booking";
@@ -30,25 +33,25 @@ export const rootRoutes = createBrowserRouter([
       {
         path: "/rooms/:id",
         element: (
-          <PrivateRoute>
+          <PrivateUserRoute>
             <Room />
-          </PrivateRoute>
+          </PrivateUserRoute>
         ),
       },
       {
-        path: "/booking",
+        path: "/booking/:id",
         element: (
-          <PrivateRoute>
+          <PrivateUserRoute>
             <Booking />
-          </PrivateRoute>
+          </PrivateUserRoute>
         ),
       },
       {
         path: "/dashboard",
         element: (
-          <PrivateRoute>
+          <PrivateAdminRoute>
             <Dashboard />
-          </PrivateRoute>
+          </PrivateAdminRoute>
         ),
         children: [
           { index: true, element: <RoomDashboard /> },

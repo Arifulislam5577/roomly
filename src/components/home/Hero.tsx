@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import HeroImage from "../../assets/images/hero.png";
-import { Button } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import Statistics from "./Statistics";
 
 const Hero = () => {
@@ -16,7 +17,9 @@ const Hero = () => {
                 Efficient, hassle-free room booking for all your meeting needs.
               </p>
               <div className="xl:text-left text-center">
-                <Button>Book Now</Button>
+                <Link to="/rooms" className={buttonVariants()}>
+                  Book Now
+                </Link>
               </div>
             </div>
 

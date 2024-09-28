@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 
-const PrivateRoute = ({ children }: { children: ReactNode }) => {
+const PrivateUserRoute = ({ children }: { children: ReactNode }) => {
   const { user, token } = useAppSelector((state) => state.auth);
 
   if (!user && !token) {
@@ -12,4 +12,18 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
   return children;
 };
 
-export default PrivateRoute;
+const PrivateAdminRoute = ({ children }: { children: ReactNode }) => {
+  const { user, token } = useAppSelector((state) => state.auth);
+
+  if (!user && !token) {
+    return <Navigate to="/login" replace={true} />;
+  }
+
+  if (user && user.role !== "admin") {
+    return <Navigate to="/" replace={true} />;
+  }
+
+  return children;
+};
+
+export { PrivateAdminRoute, PrivateUserRoute };

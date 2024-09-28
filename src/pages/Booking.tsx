@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { CalendarIcon, User } from "lucide-react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import TimeSlot from "../components/shared/TimeSlot";
 import { Button } from "../components/ui/button";
 import { Calendar } from "../components/ui/calendar";
@@ -20,6 +21,8 @@ interface TimeSlots {
 const slotArr: ["am", "pm"] = ["am", "pm"];
 
 const Booking = () => {
+  const { id } = useParams();
+
   const [date, setDate] = useState<Date>();
   const [touched, setTouched] = useState(false);
   const [timeValue, setTimeValue] = useState<TimeSlots>({
@@ -34,6 +37,9 @@ const Booking = () => {
     const minutes = time < 10 ? `0${time}` : time;
     return `${hours}:${minutes} ${slot.toUpperCase()}`;
   };
+
+  console.log({ id });
+
   return (
     <section className="py-10 sm:py-16 lg:py-24 bg-white">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">

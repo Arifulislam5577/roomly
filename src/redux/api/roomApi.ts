@@ -6,7 +6,7 @@ export const roomApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState, endpoint }) => {
-      if (endpoint !== "getAllRoom") {
+      if (endpoint !== "getAllRoom" && endpoint !== "getRoom") {
         const token = (getState() as RootState).auth.token;
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);
@@ -21,6 +21,13 @@ export const roomApi = createApi({
     getAllRoom: builder.query({
       query: () => ({
         url: "/rooms",
+        method: "GET",
+      }),
+      providesTags: ["Room"],
+    }),
+    getRoom: builder.query({
+      query: (roomId) => ({
+        url: `/rooms/${roomId}`,
         method: "GET",
       }),
       providesTags: ["Room"],
@@ -56,4 +63,5 @@ export const {
   useGetAllRoomQuery,
   useDeleteRoomMutation,
   useUpdateRoomMutation,
+  useGetRoomQuery,
 } = roomApi;

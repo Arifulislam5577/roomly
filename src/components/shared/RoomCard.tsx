@@ -18,7 +18,13 @@ const RoomCard = ({
         className
       )}
     >
-      <img src={room?.image} alt={room?.name} className="rounded-sm" />
+      <div className="w-full h-[160px] rounded-sm overflow-hidden">
+        <img
+          src={room?.image}
+          alt={room?.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
 
       <div className="mt-4 text-left space-y-2.5">
         <p className="text-lg font-medium text-slate-900">{room?.name}</p>

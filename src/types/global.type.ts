@@ -31,6 +31,17 @@ export type TUser = {
   _id: string;
 };
 
+export type TSlot = {
+  _id: string;
+  room: TRoom;
+  date: string;
+  startTime: string;
+  endTime: string;
+  isBooked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type TRoom = {
   _id: string;
   name: string;
