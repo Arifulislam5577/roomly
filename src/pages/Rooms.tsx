@@ -18,9 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import { Skeleton } from "../components/ui/skeleton";
 import { Slider } from "../components/ui/slider";
+import { useGetAllRoomQuery } from "../redux/api/roomApi";
+import { TError, TRoom } from "../types/global.type";
 
 const Rooms = () => {
+  const { data, isLoading, isError, error } = useGetAllRoomQuery({});
   return (
     <section className="py-10 sm:py-16 lg:py-24 bg-white">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
@@ -55,12 +59,37 @@ const Rooms = () => {
             </div>
           </div>
           <div className="xl:col-span-9 col-span-12 grid grid-cols-12 gap-5 px-3">
-            {[...Array(9).keys()].map((room) => (
-              <RoomCard
-                key={room}
-                className="lg:col-span-4 md:col-span-6 col-span-12"
-              />
-            ))}
+            {isLoading &&
+              [...Array(9).keys()].map((item) => (
+                <div
+                  key={item}
+                  className="flex flex-col space-y-3 lg:col-span-4 md:col-span-6 col-span-12"
+                >
+                  <Skeleton className="h-[125px] w-full rounded-xl bg-white" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-full bg-white" />
+                    <Skeleton className="h-4 w-full bg-white" />
+                    <Skeleton className="h-4 w-full bg-white" />
+                    <Skeleton className="h-4 w-full bg-white" />
+                  </div>
+                </div>
+              ))}
+            {!isLoading &&
+              !isError &&
+              data?.data?.map((room: TRoom) => {
+                return (
+                  <RoomCard
+                    key={room._id}
+                    room={room}
+                    className="lg:col-span-4 md:col-span-6 col-span-12"
+                  />
+                );
+              })}
+            {isError && (
+              <p className="col-span-12 text-red-500">
+                {(error as TError).data.message}
+              </p>
+            )}
             <div className="col-span-12 flex justify-start">
               <Pagination className="lg:justify-end justify-center">
                 <PaginationContent>

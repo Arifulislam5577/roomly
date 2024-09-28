@@ -40,6 +40,14 @@ export const roomApi = createApi({
       }),
       invalidatesTags: ["Room"],
     }),
+    updateRoom: builder.mutation({
+      query: ({ roomId, roomData }) => ({
+        url: `/rooms/${roomId}`,
+        method: "PUT",
+        body: roomData,
+      }),
+      invalidatesTags: ["Room"],
+    }),
   }),
 });
 
@@ -47,4 +55,5 @@ export const {
   useAddNewRoomMutation,
   useGetAllRoomQuery,
   useDeleteRoomMutation,
+  useUpdateRoomMutation,
 } = roomApi;

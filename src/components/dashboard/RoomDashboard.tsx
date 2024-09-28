@@ -1,7 +1,7 @@
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   useDeleteRoomMutation,
@@ -26,8 +26,11 @@ import {
   TableRow,
 } from "../ui/table";
 import AddNewRoom from "./AddNewRoom";
+import UpdateRoom from "./UpdateRoom";
 
 const RoomDashboard = () => {
+  const [open, setOpen] = useState(false);
+
   const { data, isLoading, isError, error } = useGetAllRoomQuery({});
   const [
     deleteRoom,
@@ -85,7 +88,7 @@ const RoomDashboard = () => {
                   <TableCell>{item.capacity}</TableCell>
                   <TableCell>${item.pricePerSlot}</TableCell>
                   <TableCell className="text-right">
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                           <span className="sr-only">Open menu</span>
@@ -94,7 +97,15 @@ const RoomDashboard = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Update</DropdownMenuItem>
+                        <button
+                          className={
+                            "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full "
+                          }
+                          onClick={() => setOpen(true)}
+                        >
+                          Update
+                        </button>
+                        <UpdateRoom open={open} setOpen={setOpen} room={item} />
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           disabled={isLoadingDeleteRoom}
