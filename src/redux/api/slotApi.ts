@@ -24,14 +24,36 @@ export const slotApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Slot"],
     }),
     getAllSlot: builder.query({
       query: () => ({
         url: "/slots/availability",
         method: "GET",
       }),
+      providesTags: ["Slot"],
+    }),
+    deleteSlot: builder.mutation({
+      query: (slotId) => ({
+        url: `/slots/${slotId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Slot"],
+    }),
+    updateSlot: builder.mutation({
+      query: ({ slotId, slotData }) => ({
+        url: `/slots/${slotId}`,
+        method: "PUT",
+        body: slotData,
+      }),
+      invalidatesTags: ["Slot"],
     }),
   }),
 });
 
-export const { useCreateSlotMutation, useGetAllSlotQuery } = slotApi;
+export const {
+  useCreateSlotMutation,
+  useGetAllSlotQuery,
+  useDeleteSlotMutation,
+  useUpdateSlotMutation,
+} = slotApi;
