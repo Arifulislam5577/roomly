@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authApi } from "./api/authApi";
+import { roomApi } from "./api/roomApi";
 import authReducer from "./features/auth/authSlice";
 
 const persistConfig = {
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, authReducer);
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
+    [roomApi.reducerPath]: roomApi.reducer,
     auth: persistedReducer,
   },
 
@@ -31,7 +33,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware),
+    }).concat([authApi.middleware, roomApi.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

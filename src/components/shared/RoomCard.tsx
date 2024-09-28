@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
-import RoomImage from "../../assets/images/room.jpg";
 import { cn } from "../../lib/utils";
+import { TRoom } from "../../types/global.type";
 import { Badge } from "../ui/badge";
 import { buttonVariants } from "../ui/button";
 
-const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
+const RoomCard = ({
+  className = "col-span-3",
+  room,
+}: {
+  className?: string;
+  room: TRoom;
+}) => {
   return (
     <div
       className={cn(
@@ -12,10 +18,10 @@ const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
         className
       )}
     >
-      <img src={RoomImage} alt="feature" className="rounded-sm" />
+      <img src={room?.image} alt={room?.name} className="rounded-sm" />
 
       <div className="mt-4 text-left space-y-2.5">
-        <p className="text-lg font-medium text-slate-900">Conference Room</p>
+        <p className="text-lg font-medium text-slate-900">{room?.name}</p>
         <p className="flex items-center text-sm justify-between font-normal text-slate-400">
           <span className="flex items-center gap-x-1">
             <svg
@@ -33,7 +39,7 @@ const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
             </svg>
             <span>Capacity</span>
           </span>
-          <Badge variant={"outline"}>12</Badge>
+          <Badge variant={"outline"}>{room?.capacity}</Badge>
         </p>
         <p className="flex items-center text-sm justify-between font-normal text-slate-400">
           <span className="flex items-center gap-x-1">
@@ -53,11 +59,11 @@ const RoomCard = ({ className = "col-span-3" }: { className?: string }) => {
 
             <span>Price Per Slot</span>
           </span>
-          <Badge variant={"outline"}>$120</Badge>
+          <Badge variant={"outline"}>${room?.pricePerSlot}</Badge>
         </p>
 
         <Link
-          to="/rooms/1"
+          to={`/rooms/${room?._id}`}
           className={cn(
             buttonVariants({ size: "sm", variant: "outline" }),
             "w-full"

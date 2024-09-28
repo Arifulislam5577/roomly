@@ -1,6 +1,13 @@
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 
+import { useEffect } from "react";
+import { toast } from "sonner";
+import {
+  useDeleteRoomMutation,
+  useGetAllRoomQuery,
+} from "../../redux/api/roomApi";
+import { TError, TRoom } from "../../types/global.type";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Skeleton } from "../ui/skeleton";
 import {
   Table,
   TableBody,
@@ -20,6 +28,27 @@ import {
 import AddNewRoom from "./AddNewRoom";
 
 const RoomDashboard = () => {
+  const { data, isLoading, isError, error } = useGetAllRoomQuery({});
+  const [
+    deleteRoom,
+    {
+      isLoading: isLoadingDeleteRoom,
+      isSuccess: isSuccessDeleteRoom,
+      isError: isErrorDeleteRoom,
+      error: errorDeleteRoom,
+    },
+  ] = useDeleteRoomMutation();
+
+  useEffect(() => {
+    if (isSuccessDeleteRoom) {
+      toast.success("Room deleted successfully");
+    }
+
+    if (isErrorDeleteRoom) {
+      toast.error((errorDeleteRoom as TError).data.message);
+    }
+  }, [errorDeleteRoom, isErrorDeleteRoom, isSuccessDeleteRoom]);
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -27,43 +56,66 @@ const RoomDashboard = () => {
         <AddNewRoom />
       </div>
       <div>
-        <Table className="bg-white rounded-lg border border-slate-100">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[200px]">Room Name</TableHead>
-              <TableHead>Room No.</TableHead>
-              <TableHead>Floor No.</TableHead>
-              <TableHead>Capacity</TableHead>
-              <TableHead>PricePerSlot</TableHead>
-              <TableHead className="text-right"></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">Conference Room</TableCell>
-              <TableCell>101</TableCell>
-              <TableCell>09</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$50</TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                      <span className="sr-only">Open menu</span>
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Update</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        {isLoading && (
+          <div className="space-y-3">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <Skeleton key={item} className="h-10 w-full" />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && (
+          <Table className="bg-white rounded-lg border border-slate-100">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[200px]">Room Name</TableHead>
+                <TableHead>Room No.</TableHead>
+                <TableHead>Floor No.</TableHead>
+                <TableHead>Capacity</TableHead>
+                <TableHead>PricePerSlot</TableHead>
+                <TableHead className="text-right"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data?.data?.map((item: TRoom) => (
+                <TableRow key={item._id}>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell>{item.roomNo}</TableCell>
+                  <TableCell>{item.floorNo}</TableCell>
+                  <TableCell>{item.capacity}</TableCell>
+                  <TableCell>${item.pricePerSlot}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>Update</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          disabled={isLoadingDeleteRoom}
+                          onClick={() => deleteRoom(item._id)}
+                        >
+                          {isLoadingDeleteRoom ? "Deleting..." : "Delete"}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+
+        {isError && (
+          <div className="text-red-500">
+            <p>{(error as TError)?.data?.message}</p>
+          </div>
+        )}
       </div>
     </div>
   );

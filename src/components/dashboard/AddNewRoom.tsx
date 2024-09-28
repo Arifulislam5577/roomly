@@ -1,7 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { fileToBase64 } from "../../lib/fileToBase64";
+import { useAddNewRoomMutation } from "../../redux/api/roomApi";
+import { TErrorResponse } from "../../types/global.type";
+import { roomSchema } from "../../validation/validationSchema";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import {
@@ -14,37 +19,11 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
-const roomSchema = z.object({
-  name: z
-    .string({ required_error: "Room name is required" })
-    .min(6, "Room name must be at least 6 characters"),
-  roomNo: z
-    .string({ required_error: "Room no. required" })
-    .min(1, "Room no. can not be empty"),
-  floorNo: z
-    .string({ required_error: "Floor is required" })
-    .min(1, "Floor can not be empty"),
-  capacity: z
-    .string({ required_error: "Capacity required" })
-    .min(1, "Capacity can not be empty"),
-  pricePerSlot: z
-    .string({ required_error: "Price per slot is required" })
-    .min(1, "Price can not be empty"),
-  image: z.any().refine((file) => file instanceof FileList && file.length > 0, {
-    message: "Image is required",
-  }),
-});
-
 const AddNewRoom = () => {
-  const [files, setFiles] = useState("");
-  const handleFile = (acceptedFile: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64String = reader.result?.toString() ?? "";
-      setFiles(base64String);
-    };
-    reader.readAsDataURL(acceptedFile);
-  };
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [addNewRoom, { isLoading, isSuccess, isError, error }] =
+    useAddNewRoomMutation();
   const form = useForm<z.infer<typeof roomSchema>>({
     resolver: zodResolver(roomSchema),
     defaultValues: {
@@ -53,14 +32,15 @@ const AddNewRoom = () => {
       floorNo: "",
       capacity: "",
       pricePerSlot: "",
+      amenities: "",
       image: undefined,
     },
   });
 
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, reset, resetField } = form;
 
-  const onSubmit = handleSubmit((value: z.infer<typeof roomSchema>) => {
-    handleFile(value.image?.[0]);
+  const onSubmit = handleSubmit(async (value: z.infer<typeof roomSchema>) => {
+    const base64Image = await fileToBase64(value.image[0]);
 
     const roomData = {
       name: value.name,
@@ -68,11 +48,25 @@ const AddNewRoom = () => {
       floorNo: +value.floorNo,
       capacity: +value.capacity,
       pricePerSlot: +value.pricePerSlot,
-      image: files,
+      amenities: value.amenities.split(","),
+      image: base64Image,
     };
 
-    console.log(roomData);
+    addNewRoom(roomData);
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      toast.success("Room added successfully");
+    }
+    if (isError) {
+      toast.error((error as TErrorResponse).data.message);
+    }
+  }, [error, isError, isSuccess, reset, resetField]);
 
   return (
     <Dialog>
@@ -95,7 +89,6 @@ const AddNewRoom = () => {
                 </FormItem>
               )}
             />
-
             <div className="flex items-center gap-5 mb-3">
               <FormField
                 control={control}
@@ -158,12 +151,29 @@ const AddNewRoom = () => {
             </div>
             <FormField
               control={control}
+              name="amenities"
+              render={({ field }) => (
+                <FormItem className="mb-3">
+                  <FormLabel>Amenities</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Amenities" {...field} />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
               name="image"
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
                   <FormLabel>Room Image</FormLabel>
                   <FormControl>
                     <Input
+                      ref={(ref) => {
+                        fileInputRef.current = ref;
+                        field.ref(ref);
+                      }}
                       type="file"
                       accept="image/*"
                       placeholder="Select Image"
@@ -175,8 +185,8 @@ const AddNewRoom = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Add Room
+            <Button disabled={isLoading} type="submit" className="w-full">
+              {isLoading ? "Loading..." : "Add Room"}
             </Button>
           </form>
         </Form>
