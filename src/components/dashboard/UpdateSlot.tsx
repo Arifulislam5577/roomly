@@ -172,9 +172,11 @@ const UpdateSlot: FC<UpdateSlotProps> = ({ slot, open, setOpen }) => {
                       {[...Array(12).keys()].map((hour: number) => (
                         <SelectItem
                           key={hour}
-                          value={`${hour < 10 ? `0${hour + 1}` : hour + 1}:00`}
+                          value={
+                            hour + 1 < 11 ? `0${hour + 1}:00` : `${hour + 1}:00`
+                          }
                         >
-                          {(hour + 1).toFixed(2)}
+                          {hour + 1 < 11 ? `0${hour + 1}:00` : `${hour + 1}:00`}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -203,9 +205,11 @@ const UpdateSlot: FC<UpdateSlotProps> = ({ slot, open, setOpen }) => {
                       {[...Array(12).keys()].map((hour: number) => (
                         <SelectItem
                           key={hour}
-                          value={`${hour < 10 ? `0${hour + 1}` : hour + 1}:00`}
+                          value={
+                            hour < 10 ? `0${hour + 1}:00` : `${hour + 1}:00`
+                          }
                         >
-                          {(hour + 1).toFixed(2)}
+                          {hour < 10 ? `0${hour + 1}:00` : `${hour + 1}:00`}
                         </SelectItem>
                       ))}
                     </SelectContent>

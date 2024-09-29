@@ -55,3 +55,10 @@ export type TRoom = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TSlotQuery = {
+  roomId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};

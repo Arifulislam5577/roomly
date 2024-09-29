@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TSlotQuery } from "../../types/global.type";
 import { RootState } from "../store";
 
 export const slotApi = createApi({
@@ -6,7 +7,7 @@ export const slotApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState, endpoint }) => {
-      if (endpoint !== "getAllSlot") {
+      if (endpoint !== "getAllSlot" && endpoint !== "getSlotByRoomId") {
         const token = (getState() as RootState).auth.token;
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);
@@ -33,6 +34,22 @@ export const slotApi = createApi({
       }),
       providesTags: ["Slot"],
     }),
+    getSlotByRoomId: builder.query({
+      query: (data: TSlotQuery) => {
+        const { roomId, date, startTime, endTime } = data;
+
+        let queryStr;
+        if (date && startTime && endTime) {
+          queryStr = `?date=${date}&startTime=${startTime}&endTime=${endTime}`;
+        }
+
+        return {
+          url: queryStr ? `/slots/${roomId}${queryStr}` : `/slots/${roomId}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["Slot"],
+    }),
     deleteSlot: builder.mutation({
       query: (slotId) => ({
         url: `/slots/${slotId}`,
@@ -56,4 +73,5 @@ export const {
   useGetAllSlotQuery,
   useDeleteSlotMutation,
   useUpdateSlotMutation,
+  useGetSlotByRoomIdQuery,
 } = slotApi;
