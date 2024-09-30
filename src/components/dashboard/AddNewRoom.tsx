@@ -64,7 +64,7 @@ const AddNewRoom = () => {
       toast.success("Room added successfully");
     }
     if (isError) {
-      toast.error((error as TErrorResponse).data.message);
+      toast.error((error as TErrorResponse)?.data?.message);
     }
   }, [error, isError, isSuccess, reset, resetField]);
 

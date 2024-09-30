@@ -76,7 +76,7 @@ const UpdateSlot: FC<UpdateSlotProps> = ({ slot, open, setOpen }) => {
       });
     }
     if (isError) {
-      toast.error((error as TErrorResponse).data.message);
+      toast.error((error as TErrorResponse)?.data?.message);
     }
   }, [isSuccess, isError, error, reset, setOpen]);
 

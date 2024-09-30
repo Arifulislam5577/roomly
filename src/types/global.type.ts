@@ -62,3 +62,16 @@ export type TSlotQuery = {
   startTime: string;
   endTime: string;
 };
+
+export type TBooking = {
+  room: TRoom;
+  slot: TSlot;
+  user: TUser;
+  totalAmount: number;
+  isConfirmed: "unconfirmed" | "confirmed" | "cancelled";
+  isDeleted: boolean;
+  date: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+};

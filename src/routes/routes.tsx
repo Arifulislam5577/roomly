@@ -14,10 +14,12 @@ import Contact from "../pages/Contact";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import MyBooking from "../pages/MyBooking";
 import NotFound from "../pages/NotFound";
 import Register from "../pages/Register";
 import Room from "../pages/Room";
 import Rooms from "../pages/Rooms";
+import Success from "../pages/Success";
 
 export const rootRoutes = createBrowserRouter([
   {
@@ -35,6 +37,22 @@ export const rootRoutes = createBrowserRouter([
         element: (
           <PrivateUserRoute>
             <Room />
+          </PrivateUserRoute>
+        ),
+      },
+      {
+        path: "/my-booking",
+        element: (
+          <PrivateUserRoute>
+            <MyBooking />
+          </PrivateUserRoute>
+        ),
+      },
+      {
+        path: "/success",
+        element: (
+          <PrivateUserRoute>
+            <Success />
           </PrivateUserRoute>
         ),
       },

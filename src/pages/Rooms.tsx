@@ -87,7 +87,7 @@ const Rooms = () => {
               })}
             {isError && (
               <p className="col-span-12 text-red-500">
-                {(error as TError).data.message}
+                {(error as TError)?.data?.message}
               </p>
             )}
             <div className="col-span-12 flex justify-start">

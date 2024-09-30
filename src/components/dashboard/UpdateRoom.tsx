@@ -85,7 +85,7 @@ const UpdateRoom: FC<IUpdateRoomProps> = ({ open, setOpen, room }) => {
       }
     }
     if (isError) {
-      toast.error((error as TErrorResponse).data.message);
+      toast.error((error as TErrorResponse)?.data?.message);
     }
   }, [error, isError, isSuccess, reset, setOpen]);
 

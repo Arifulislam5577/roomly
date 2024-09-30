@@ -71,7 +71,7 @@ const AddNewSlot = () => {
       });
     }
     if (isError) {
-      toast.error((error as TErrorResponse).data.message);
+      toast.error((error as TErrorResponse)?.data?.message);
     }
   }, [isSuccess, isError, error, reset]);
 

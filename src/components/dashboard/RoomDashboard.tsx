@@ -48,7 +48,7 @@ const RoomDashboard = () => {
     }
 
     if (isErrorDeleteRoom) {
-      toast.error((errorDeleteRoom as TError).data.message);
+      toast.error((errorDeleteRoom as TError)?.data?.message);
     }
   }, [errorDeleteRoom, isErrorDeleteRoom, isSuccessDeleteRoom]);
 

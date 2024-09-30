@@ -11,6 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { authApi } from "./api/authApi";
+import { bookingApi } from "./api/bookingApi";
 import { roomApi } from "./api/roomApi";
 import { slotApi } from "./api/slotApi";
 import authReducer from "./features/auth/authSlice";
@@ -27,6 +28,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [roomApi.reducerPath]: roomApi.reducer,
     [slotApi.reducerPath]: slotApi.reducer,
+    [bookingApi.reducerPath]: bookingApi.reducer,
     auth: persistedReducer,
   },
 
@@ -35,7 +37,12 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([authApi.middleware, roomApi.middleware, slotApi.middleware]),
+    }).concat([
+      authApi.middleware,
+      roomApi.middleware,
+      slotApi.middleware,
+      bookingApi.middleware,
+    ]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

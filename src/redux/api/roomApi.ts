@@ -4,7 +4,7 @@ import { RootState } from "../store";
 export const roomApi = createApi({
   reducerPath: "roomApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api",
+    baseUrl: `${import.meta.env.VITE_SERVER_URL}/api`,
     prepareHeaders: (headers, { getState, endpoint }) => {
       if (endpoint !== "getAllRoom" && endpoint !== "getRoom") {
         const token = (getState() as RootState).auth.token;

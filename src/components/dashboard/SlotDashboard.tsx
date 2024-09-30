@@ -45,7 +45,7 @@ const SlotDashboard = () => {
       toast.success("Slot deleted successfully");
     }
     if (isErrorDeleteSlot) {
-      toast.error((errorDeleteSlot as TError).data.message);
+      toast.error((errorDeleteSlot as TError)?.data?.message);
     }
   }, [errorDeleteSlot, isErrorDeleteSlot, isSuccessDeleteSlot]);
 

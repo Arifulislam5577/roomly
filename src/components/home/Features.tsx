@@ -44,7 +44,7 @@ const Features = () => {
 
           {isError && (
             <p className="col-span-12 text-red-500">
-              {(error as TError).data.message}
+              {(error as TError)?.data?.message}
             </p>
           )}
 

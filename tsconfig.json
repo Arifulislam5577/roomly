@@ -10,6 +10,9 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["vite/client"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"]
     }
