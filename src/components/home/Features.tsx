@@ -7,7 +7,9 @@ import { buttonVariants } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 
 const Features = () => {
-  const { data, isLoading, isError, error } = useGetAllRoomQuery({});
+  const { data, isLoading, isError, error } = useGetAllRoomQuery({
+    isFeatured: true,
+  });
   return (
     <section className="py-10 sm:py-16 lg:py-24">
       <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -38,7 +40,7 @@ const Features = () => {
             ))}
           {!isLoading &&
             !isError &&
-            data?.data?.slice(0, 4).map((room: TRoom) => {
+            data?.data?.data?.map((room: TRoom) => {
               return <RoomCard key={room._id} room={room} />;
             })}
 

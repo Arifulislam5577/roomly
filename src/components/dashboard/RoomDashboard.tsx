@@ -31,7 +31,7 @@ import UpdateRoom from "./UpdateRoom";
 const RoomDashboard = () => {
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, isError, error } = useGetAllRoomQuery({});
+  const { data, isLoading, isError, error, isSuccess } = useGetAllRoomQuery({});
   const [
     deleteRoom,
     {
@@ -67,7 +67,7 @@ const RoomDashboard = () => {
           </div>
         )}
 
-        {!isLoading && (
+        {!isLoading && !isError && isSuccess && (
           <Table className="bg-white rounded-lg border border-slate-100">
             <TableHeader>
               <TableRow>
@@ -80,7 +80,7 @@ const RoomDashboard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.data?.map((item: TRoom) => (
+              {data?.data?.data?.map((item: TRoom) => (
                 <TableRow key={item._id}>
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell>{item.roomNo}</TableCell>

@@ -65,7 +65,7 @@ const Success = () => {
             We're excited to host you. Feel free to reach out if you need any
             further assistance.
           </p>
-          <Link to="/my-bookings" className={cn(buttonVariants(), "mt-6")}>
+          <Link to="/my-booking" className={cn(buttonVariants(), "mt-6")}>
             📅 See Your Booking
           </Link>
         </div>
@@ -99,7 +99,7 @@ const Success = () => {
                 We're excited to host you. Feel free to reach out if you need
                 any further assistance.
               </p>
-              <Link to="/my-bookings" className={cn(buttonVariants(), "mt-6")}>
+              <Link to="/my-booking" className={cn(buttonVariants(), "mt-6")}>
                 📅 See Your Booking
               </Link>
             </div>

@@ -102,7 +102,7 @@ const UpdateSlot: FC<UpdateSlotProps> = ({ slot, open, setOpen }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {data?.data?.map((room: TRoom) => (
+                      {data?.data?.data?.map((room: TRoom) => (
                         <SelectItem key={room._id} value={room._id}>
                           {room.name}
                         </SelectItem>

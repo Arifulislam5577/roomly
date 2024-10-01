@@ -1,6 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
+interface IQuery {
+  page?: number;
+  sort?: string;
+  price?: number[];
+  capacity?: number[];
+  keyword?: string;
+  isFeatured?: boolean;
+}
+
 export const roomApi = createApi({
   reducerPath: "roomApi",
   baseQuery: fetchBaseQuery({
@@ -19,10 +28,41 @@ export const roomApi = createApi({
   tagTypes: ["Room"],
   endpoints: (builder) => ({
     getAllRoom: builder.query({
-      query: () => ({
-        url: "/rooms",
-        method: "GET",
-      }),
+      query: (query: IQuery) => {
+        const {
+          page = 1,
+          keyword = "",
+          price = [0, 100000],
+          capacity = [0, 100000],
+          isFeatured = false,
+          sort = "",
+        } = query;
+
+        const queryParams = new URLSearchParams({
+          "pricePerSlot[gte]": price[0].toString(),
+          "pricePerSlot[lte]": price[1].toString(),
+          "capacity[gte]": capacity[0].toString(),
+          "capacity[lte]": capacity[1].toString(),
+          searchTerm: keyword,
+          page: page.toString(),
+          sort:
+            sort === "dsc"
+              ? "pricePerSlot"
+              : sort === "asc"
+              ? "-pricePerSlot"
+              : "",
+        });
+
+        if (isFeatured) {
+          queryParams.append("limit", "4");
+        } else {
+          queryParams.append("limit", "6");
+        }
+        return {
+          url: `/rooms?${queryParams.toString()}`,
+          method: "GET",
+        };
+      },
       providesTags: ["Room"],
     }),
     getRoom: builder.query({
