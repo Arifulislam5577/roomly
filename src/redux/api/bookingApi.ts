@@ -47,6 +47,13 @@ export const bookingApi = createApi({
       }),
       invalidatesTags: ["Booking"],
     }),
+    getUserBooking: builder.query({
+      query: () => ({
+        url: `/my-booking`,
+        method: "GET",
+      }),
+      providesTags: ["Booking"],
+    }),
   }),
 });
 
@@ -55,4 +62,5 @@ export const {
   useCreateBookingMutation,
   useGetBookingsQuery,
   useUpdateBookingMutation,
+  useGetUserBookingQuery,
 } = bookingApi;
