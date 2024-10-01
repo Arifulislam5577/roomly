@@ -3,6 +3,7 @@ import { RootState } from "../store";
 
 export const bookingApi = createApi({
   reducerPath: "bookingApi",
+  tagTypes: ["Booking"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER_URL}/api`,
     prepareHeaders: (headers, { getState }) => {
@@ -29,12 +30,22 @@ export const bookingApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Booking"],
     }),
     getBookings: builder.query({
       query: () => ({
         url: "/bookings",
         method: "GET",
       }),
+      providesTags: ["Booking"],
+    }),
+    updateBooking: builder.mutation({
+      query: (data) => ({
+        url: `/bookings/${data.id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Booking"],
     }),
   }),
 });
@@ -43,4 +54,5 @@ export const {
   usePaymentMutation,
   useCreateBookingMutation,
   useGetBookingsQuery,
+  useUpdateBookingMutation,
 } = bookingApi;

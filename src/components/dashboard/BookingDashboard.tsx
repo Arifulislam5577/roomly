@@ -1,12 +1,16 @@
 import { MoreHorizontal } from "lucide-react";
-import { useGetBookingsQuery } from "../../redux/api/bookingApi";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import {
+  useGetBookingsQuery,
+  useUpdateBookingMutation,
+} from "../../redux/api/bookingApi";
 import { TBooking, TError } from "../../types/global.type";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Skeleton } from "../ui/skeleton";
@@ -23,6 +27,26 @@ const BookingDashboard = () => {
   const { data, isError, isLoading, isSuccess, error } = useGetBookingsQuery(
     {}
   );
+
+  const [
+    updateBooking,
+    {
+      isError: isErrorUpdate,
+      isSuccess: isSuccessUpdate,
+      isLoading: isLoadingUpdate,
+      error: errorUpdate,
+    },
+  ] = useUpdateBookingMutation();
+
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      toast.success("Booking status update");
+    }
+
+    if (isErrorUpdate) {
+      toast.error((errorUpdate as TError)?.data?.message);
+    }
+  }, [errorUpdate, isErrorUpdate, isSuccessUpdate]);
 
   return (
     <div>
@@ -70,28 +94,25 @@ const BookingDashboard = () => {
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                      <button
-                        className={
-                          "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full capitalize"
-                        }
-                      >
-                        confirmed
-                      </button>
-                      <button
-                        className={
-                          "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full capitalize"
-                        }
-                      >
-                        unconfirmed
-                      </button>
-                      <DropdownMenuSeparator />
-                      <button
-                        className={
-                          "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full capitalize"
-                        }
-                      >
-                        cancelled
-                      </button>
+                      {["confirmed", "unconfirmed", "cancelled"].map(
+                        (status) => (
+                          <button
+                            disabled={isLoadingUpdate}
+                            key={status}
+                            className={
+                              "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full capitalize"
+                            }
+                            onClick={() => {
+                              updateBooking({
+                                id: item._id,
+                                data: { isConfirmed: status },
+                              });
+                            }}
+                          >
+                            {isLoadingUpdate ? "loading..." : status}
+                          </button>
+                        )
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
